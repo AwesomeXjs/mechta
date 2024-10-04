@@ -64,15 +64,10 @@ func sumNums(elements []Element, maxGoroutines int) (int64, error) {
 
 	for _, element := range elements {
 		wg.Add(1)
-		if element.A < -10 && element.A > 10 {
+		if element.A < -10 || element.A > 10 || element.B < -10 || element.B > 10 {
 			wg.Done()
-			return 0, fmt.Errorf("invalid array")
+			return 0, fmt.Errorf("неверный массив, нужны числа от -10 до 10")
 		}
-		if element.B < -10 && element.B > 10 {
-			wg.Done()
-			return 0, fmt.Errorf("invalid array")
-		}
-
 		go func(el Element) {
 			defer wg.Done()
 			worker(el, myChan, &sum)
